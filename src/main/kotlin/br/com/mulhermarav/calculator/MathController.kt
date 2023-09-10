@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.atomic.AtomicLong
 
+private const val ERROR_MESSAGE = "Please set a numeric value!"
+
 @RestController
 class MathController {
 
@@ -16,9 +18,58 @@ class MathController {
             @PathVariable(value = "numberTwo") numberTwo: String?): Double {
 
         if(!isNumeric(numberOne) || !isNumeric(numberTwo))
-            throw  UnsupportedMathOperationException("Please set a numeric value!")
+            throw  UnsupportedMathOperationException(ERROR_MESSAGE)
 
         return convertToDouble(numberOne) + convertToDouble(numberTwo)
+    }
+
+    @RequestMapping(value = ["/multi/{numberOne}/{numberTwo}"])
+    fun multi(@PathVariable(value = "numberOne") numberOne: String?,
+            @PathVariable(value = "numberTwo") numberTwo: String?): Double {
+
+        if(!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw  UnsupportedMathOperationException(ERROR_MESSAGE)
+
+        return convertToDouble(numberOne) * convertToDouble(numberTwo)
+    }
+
+    @RequestMapping(value = ["/sub/{numberOne}/{numberTwo}"])
+    fun sub(@PathVariable(value = "numberOne") numberOne: String?,
+              @PathVariable(value = "numberTwo") numberTwo: String?): Double {
+
+        if(!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw  UnsupportedMathOperationException(ERROR_MESSAGE)
+
+        return convertToDouble(numberOne) - convertToDouble(numberTwo)
+    }
+
+    @RequestMapping(value = ["/div/{numberOne}/{numberTwo}"])
+    fun div(@PathVariable(value = "numberOne") numberOne: String?,
+            @PathVariable(value = "numberTwo") numberTwo: String?): Double {
+
+        if(!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw  UnsupportedMathOperationException(ERROR_MESSAGE)
+
+        return convertToDouble(numberOne) / convertToDouble(numberTwo)
+    }
+
+    @RequestMapping(value = ["/sqrt/{numberOne}"])
+    fun sqrt(@PathVariable(value = "numberOne") numberOne: String?): Double {
+
+        if(!isNumeric(numberOne))
+            throw  UnsupportedMathOperationException(ERROR_MESSAGE)
+
+        return kotlin.math.sqrt(convertToDouble(numberOne))
+    }
+
+    @RequestMapping(value = ["/average/{numberOne}/{numberTwo}"])
+    fun average(@PathVariable(value = "numberOne") numberOne: String?,
+            @PathVariable(value = "numberTwo") numberTwo: String?): Double {
+
+        if(!isNumeric(numberOne) || !isNumeric(numberTwo))
+            throw  UnsupportedMathOperationException(ERROR_MESSAGE)
+
+        return convertToDouble(numberOne) + convertToDouble(numberTwo) / 2
     }
 
     private fun convertToDouble(strNumber: String?): Double {
