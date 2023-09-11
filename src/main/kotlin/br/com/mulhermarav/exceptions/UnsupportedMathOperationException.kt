@@ -1,4 +1,4 @@
-package br.com.mulhermarav.calculator.exceptions
+package br.com.mulhermarav.exceptions
 
 class UnsupportedMathOperationException(exception: String?): RuntimeException(exception) {
 }

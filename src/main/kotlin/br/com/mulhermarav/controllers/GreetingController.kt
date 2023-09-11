@@ -1,5 +1,6 @@
-package br.com.mulhermarav.greeting
+package br.com.mulhermarav.controllers
 
+import br.com.mulhermarav.models.Greeting
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController

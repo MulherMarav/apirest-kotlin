@@ -1,4 +1,4 @@
-package br.com.mulhermarav.calculator.exceptions
+package br.com.mulhermarav.exceptions
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

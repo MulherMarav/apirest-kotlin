@@ -1,4 +1,4 @@
-package br.com.mulhermarav.greeting
+package br.com.mulhermarav.models
 
 class Greeting(val id: Long, val content: String) {
 }
