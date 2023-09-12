@@ -1,60 +1,57 @@
 package br.com.mulhermarav.services
 
+import br.com.mulhermarav.exceptions.ResourceNotFoundException
 import br.com.mulhermarav.models.Person
+import br.com.mulhermarav.repositories.PersonRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
 
 @Service
 class PersonService {
 
-    private val counter: AtomicLong = AtomicLong()
+    @Autowired
+    private lateinit var repository: PersonRepository
 
     private val logger = Logger.getLogger(PersonService::class.java.name)
+
 
     fun findById(id: Long): Person {
         logger.info("Finding one person!")
 
-        val person = Person()
-
-        person.id = counter.incrementAndGet()
-        person.firstName = "Dyane"
-        person.lastName = "Andrade"
-        person.address = "São Paulo - Brasil"
-        person.gender = "Female"
-
-        return person
+        return repository.findById(id).orElseThrow { ResourceNotFoundException("No records found for this Id!") }
     }
 
     fun findAll(): List<Person> {
         logger.info("Finding all people!")
 
-        val persons: MutableList<Person> = ArrayList()
-
-        for (i in 0..7) {
-            val person = mockPerson(i)
-
-            persons.add(person)
-        }
-
-        return persons
+        return repository.findAll()
     }
 
-    fun create(person: Person) = person
+    fun create(person: Person): Person {
+        logger.info("Creating one person with name ${person.firstName}!")
 
-    fun update(person: Person) = person
-
-    fun delete(id: Long) {}
-
-    private fun mockPerson(i: Int): Person {
-        val person = Person()
-        person.id = counter.incrementAndGet()
-        person.firstName = "Person Name $i"
-        person.lastName = "Last Name $i"
-        person.address = "Some Address in Brasil"
-        person.gender = "Female"
-
-        return person
-
+        return repository.save(person)
     }
+
+    fun update(person: Person): Person {
+        logger.info("Updating one person with id ${person.id}!")
+
+        val entity = findById(person.id)
+
+        entity.firstName = person.firstName
+        entity.lastName = person.lastName
+        entity.address = person.address
+        entity.gender = person.gender
+
+        return repository.save(person)
+    }
+
+    fun delete(id: Long) {
+        logger.info("Deleting one person with id ${id}!")
+
+        val entity = findById(id)
+        repository.delete(entity)
+    }
+
 }
