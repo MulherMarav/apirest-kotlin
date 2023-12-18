@@ -4,10 +4,14 @@ import br.com.mulhermarav.models.Person
 import br.com.mulhermarav.services.PersonService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,41 +21,39 @@ class PersonController {
     @Autowired
     private lateinit var service: PersonService
 
-    @RequestMapping(value = ["/{id}"], method = [RequestMethod.GET],
+    @GetMapping(value = ["/{id}"],
         produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findById(@PathVariable(value = "id") id: Long): Person {
 
         return service.findById(id)
     }
 
-    @RequestMapping(method = [RequestMethod.GET],
-        produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun findAll(): List<Person> {
 
         return service.findAll()
     }
 
-    @RequestMapping(method = [RequestMethod.POST],
-        produces = [MediaType.APPLICATION_JSON_VALUE],
+    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE],
         consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun create(@RequestBody person: Person): Person {
 
         return service.create(person)
     }
 
-    @RequestMapping(method = [RequestMethod.PUT],
-        produces = [MediaType.APPLICATION_JSON_VALUE],
+    @PutMapping(produces = [MediaType.APPLICATION_JSON_VALUE],
         consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun update(@RequestBody person: Person): Person {
 
         return service.update(person)
     }
 
-    @RequestMapping(value = ["/{id}"], method = [RequestMethod.DELETE],
+    @DeleteMapping(value = ["/{id}"],
         produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun delete(@PathVariable(value = "id") id: Long) {
+    fun delete(@PathVariable(value = "id") id: Long) : ResponseEntity<*> {
+        service.delete(id)
 
-        return service.delete(id)
+        return ResponseEntity.noContent().build<Any>()
     }
 
 }

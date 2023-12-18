@@ -19,7 +19,8 @@ class PersonService {
     fun findById(id: Long): Person {
         logger.info("Finding one person!")
 
-        return repository.findById(id).orElseThrow { ResourceNotFoundException("No records found for this Id!") }
+        return repository.findById(id)
+            .orElseThrow { ResourceNotFoundException("No records found for this Id!") }
     }
 
     fun findAll(): List<Person> {
