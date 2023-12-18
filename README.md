@@ -1,2 +1,2 @@
-# learn_kotlin_apirestful
+# learn_kotlin_apirest
 Progress: Develop a REST API
